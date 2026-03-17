@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://lmusaiqixjiufxsynand.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxtdXNhaXFpeGppdWZ4c3luYW5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxNjM0MDAsImV4cCI6MjA3ODczOTQwMH0.sArypoe2Ptch9EZUaTggMBA3Y4bTJzFIX1DalgsKX94';
+const supabaseUrl = 'https://snjpwnqaydymkbjwwsdi.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuanB3bnFheWR5bWtiand3c2RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2OTkxMTIsImV4cCI6MjA4OTI3NTExMn0.swM4Y6_T0RH-SJk1qjRHt0eJSnI9qif7KbYeZVRoS8U';
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -36,6 +36,8 @@ async function testRegistration() {
       participant_name: 'Test User',
       participant_email: 'test@example.com',
       participant_phone: '+41 79 123 45 67',
+      number_of_people: 1,
+      status: 'pending',
     };
 
     console.log('Registration data:', registrationData);
