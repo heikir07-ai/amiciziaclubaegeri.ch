@@ -133,7 +133,7 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
           <p className="text-gray-500 text-base leading-relaxed mb-8">
             {t(
               'Unser Ziel ist es, Leute zusammenzubringen, zu essen, zu trinken und ein geselliges Zusammensein zu feiern. Wir schaffen Momente der Freude und Gemeinschaft, in denen Menschen bei gutem Essen und Trinken zusammenkommen können.',
-              'Il nostro obiettivo è riunire le persone, mangiare, bere e festeggiare insieme. Creiamo momenti di gioia e comunità.'
+              'Il nostro obiettivo è riunire le persone, mangiare, bere e festeggiare insieme. Creiamo momenti di gioia e comunità in cui le persone possono incontrarsi intorno a buon cibo e bevande.'
             )}
           </p>
           <div className="inline-block bg-[#1a5c35] text-white rounded-2xl px-8 py-5">
@@ -160,13 +160,13 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
             <p className="text-gray-500 text-base leading-relaxed">
               {t(
                 'Der Amicizia Club Aegeri wurde 1985 von italienischen Emigranten in Unterägeri gegründet mit dem Ziel, die Freundschaft zwischen der italienischen und der Schweizer Bevölkerung zu fördern. Entstanden aus der Leidenschaft und dem Wunsch, einen Raum zu schaffen, in dem die italienische Kultur gedeihen kann, hat der Club von Anfang an Brücken zwischen den beiden Gemeinschaften gebaut und eine einladende Umgebung geschaffen, in der Neuankömmlinge Unterstützung und Akzeptanz finden.',
-                "Il Club Amicizia Aegeri è stato fondato nel 1985 da emigranti italiani a Unterägeri con l'obiettivo di promuovere l'amicizia tra la popolazione italiana e svizzera."
+                "Il Club Amicizia Aegeri è stato fondato nel 1985 da emigranti italiani a Unterägeri con l'obiettivo di promuovere l'amicizia tra la popolazione italiana e svizzera. Nato dalla passione e dal desiderio di creare uno spazio in cui la cultura italiana possa prosperare, il club ha costruito fin dall'inizio ponti tra le due comunità e creato un ambiente accogliente in cui i nuovi arrivati trovano sostegno e accettazione."
               )}
             </p>
             <p className="text-gray-500 text-base leading-relaxed">
               {t(
                 'In fast vier Jahrzehnten haben wir hunderte von Veranstaltungen organisiert, tausenden von Menschen geholfen und eine lebendige Gemeinschaft geschaffen, die das Beste der italienischen Kultur und Werte repräsentiert und die Integration sowie das gegenseitige Verständnis zwischen Italienern und Schweizern fördert.',
-                'In quasi quattro decenni abbiamo organizzato centinaia di eventi, aiutato migliaia di persone e creato una vivace comunità.'
+                "In quasi quattro decenni abbiamo organizzato centinaia di eventi, aiutato migliaia di persone e creato una vivace comunità che rappresenta il meglio della cultura e dei valori italiani e promuove l'integrazione e la comprensione reciproca tra italiani e svizzeri."
               )}
             </p>
           </div>

@@ -222,7 +222,7 @@ export default function Home({ onNavigate }: HomeProps) {
         >
           {[
             { value: 50, suffix: '', labelDe: 'Mitglieder', labelIt: 'Soci', descDe: '', descIt: '' },
-            { value: 4, suffix: '', labelDe: 'Veranstaltungen pro Jahr', labelIt: 'Veranstaltungen pro Jahr', descDe: '', descIt: '' },
+            { value: 4, suffix: '', labelDe: 'Veranstaltungen pro Jahr', labelIt: 'Eventi all\'anno', descDe: '', descIt: '' },
             { value: 1, suffix: '', labelDe: 'Gemeinschaft', labelIt: 'Comunità', descDe: '', descIt: '' },
           ].map((stat) => (
             <div key={stat.labelDe} className="text-center">

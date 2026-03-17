@@ -131,7 +131,7 @@ export default function Events({ onNavigate }: EventsProps) {
       <div className="pt-16 pb-8 px-6 text-center">
         <div className="max-w-3xl mx-auto pt-10">
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
-            {t('Veranstaltungen', 'Prossimi Eventi')}
+            {t('Veranstaltungen', 'Eventi')}
           </h1>
           <p className="text-gray-400 text-base">
             {t(
