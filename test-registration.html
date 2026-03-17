@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Event Registration</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <h1>Event Registration Test</h1>
+  <div id="result"></div>
+  <button onclick="testRegistration()">Test Registration</button>
+
+  <script>
+    const SUPABASE_URL = 'https://lmusaiqixjiufxsynand.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxtdXNhaXFpeGppdWZ4c3luYW5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxNjM0MDAsImV4cCI6MjA3ODczOTQwMH0.sArypoe2Ptch9EZUaTggMBA3Y4bTJzFIX1DalgsKX94';
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function testRegistration() {
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = 'Testing...';
+
+      try {
+        console.log('Step 1: Fetching events...');
+        const { data: events, error: eventsError } = await supabase
+          .from('events')
+          .select('*')
+          .limit(1);
+
+        if (eventsError) {
+          resultDiv.innerHTML = `<p style="color: red;">Events Error: ${JSON.stringify(eventsError)}</p>`;
+          return;
+        }
+
+        console.log('Events:', events);
+
+        if (!events || events.length === 0) {
+          resultDiv.innerHTML = '<p style="color: red;">No events found</p>';
+          return;
+        }
+
+        const event = events[0];
+        console.log('Step 2: Inserting registration...');
+
+        const registrationData = {
+          event_id: event.id,
+          participant_name: 'Test User ' + Date.now(),
+          participant_email: 'test' + Date.now() + '@example.com',
+          participant_phone: '+41 79 123 45 67'
+        };
+
+        console.log('Registration data:', registrationData);
+
+        const { data: registration, error: regError } = await supabase
+          .from('event_registrations')
+          .insert([registrationData])
+          .select();
+
+        if (regError) {
+          resultDiv.innerHTML = `<p style="color: red;">Registration Error: ${JSON.stringify(regError)}</p>`;
+          console.error('Registration error:', regError);
+          return;
+        }
+
+        console.log('Registration successful:', registration);
+        resultDiv.innerHTML = `<p style="color: green;">Success! Registration created: ${JSON.stringify(registration, null, 2)}</p>`;
+
+      } catch (error) {
+        resultDiv.innerHTML = `<p style="color: red;">Exception: ${error.message}</p>`;
+        console.error('Exception:', error);
+      }
+    }
+  </script>
+</body>
+</html>

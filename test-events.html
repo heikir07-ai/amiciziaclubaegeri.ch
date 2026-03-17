@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Events Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <h1>Events Test</h1>
+  <div id="result"></div>
+
+  <script>
+    const supabaseUrl = 'https://lmusaiqixjiufxsynand.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxtdXNhaXFpeGppdWZ4c3luYW5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxNjM0MDAsImV4cCI6MjA3ODczOTQwMH0.sArypoe2Ptch9EZUaTggMBA3Y4bTJzFIX1DalgsKX94';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    async function testEvents() {
+      console.log('Testing events query...');
+      const resultDiv = document.getElementById('result');
+
+      try {
+        const { data, error } = await supabase
+          .from('events')
+          .select('*')
+          .eq('is_past', false)
+          .order('event_date', { ascending: true });
+
+        if (error) {
+          console.error('Error:', error);
+          resultDiv.innerHTML = '<pre style="color: red;">' + JSON.stringify(error, null, 2) + '</pre>';
+        } else {
+          console.log('Success! Found', data.length, 'events');
+          resultDiv.innerHTML = '<pre style="color: green;">Found ' + data.length + ' events:\n' + JSON.stringify(data, null, 2) + '</pre>';
+        }
+      } catch (err) {
+        console.error('Exception:', err);
+        resultDiv.innerHTML = '<pre style="color: red;">' + err.toString() + '</pre>';
+      }
+    }
+
+    testEvents();
+  </script>
+</body>
+</html>
