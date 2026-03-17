@@ -13,7 +13,7 @@ const boardMembers = [
   { name: 'Michael Heilig', roleDe: 'Kassier', roleIt: 'Tesoriere' },
   { name: 'Giuseppe Clauderotti', roleDe: 'Sekretär AI / Centro Italiano Zug', roleIt: 'Segretario AI / Centro Italiano Zug' },
   { name: 'Kevin Lüthold', roleDe: 'Beisitzer', roleIt: 'Consigliere' },
-  { name: 'Trudi Gabriel', roleDe: 'Beisitzerin', roleIt: 'Consigliera' },
+  { name: 'Trudy Gabriel', roleDe: 'Beisitzerin', roleIt: 'Consigliera' },
   { name: 'Josef Müller', roleDe: 'Beisitzer', roleIt: 'Consigliere' },
   { name: 'Erwin Peretti', roleDe: 'Beisitzer', roleIt: 'Consigliere' },
 ];
