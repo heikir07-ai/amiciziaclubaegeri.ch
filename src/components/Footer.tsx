@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLang } from '../contexts/LanguageContext';
+import { supabase } from '../supabase';
 
 interface FooterProps {
   onNavigate: (page: 'home' | 'events' | 'membership' | 'contact') => void;
@@ -8,13 +9,49 @@ interface FooterProps {
 export default function Footer({ onNavigate }: FooterProps) {
   const { t } = useLang();
   const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) {
-      setSubscribed(true);
-      setEmail('');
+
+    if (!email.trim()) return;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setSubmitStatus('error');
+      setErrorMessage(t('Bitte geben Sie eine gültige E-Mail-Adresse ein', 'Inserisci un indirizzo email valido'));
+      return;
+    }
+
+    setSubmitStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const { error } = await supabase
+        .from('newsletter_subscribers')
+        .insert([{
+          email: email.trim().toLowerCase(),
+          status: 'active'
+        }]);
+
+      if (error) {
+        // Check if it's a duplicate email error
+        if (error.code === '23505') {
+          setErrorMessage(t('Diese E-Mail ist bereits registriert', 'Questa email è già registrata'));
+        } else {
+          throw error;
+        }
+        setSubmitStatus('error');
+      } else {
+        setSubmitStatus('success');
+        setEmail('');
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+      }
+    } catch (error: any) {
+      setSubmitStatus('error');
+      setErrorMessage(error.message || t('Ein Fehler ist aufgetreten', 'Si è verificato un errore'));
+      console.error('Newsletter subscription error:', error);
     }
   };
 
@@ -28,27 +65,40 @@ export default function Footer({ onNavigate }: FooterProps) {
           <p className="text-gray-400 mb-10">
             {t('Bleiben Sie auf dem Laufenden über unsere Veranstaltungen', 'Rimani aggiornato sui nostri eventi')}
           </p>
-          {subscribed ? (
-            <p className="text-[#1a5c35] font-semibold">
-              {t('Vielen Dank für Ihre Anmeldung!', 'Grazie per la tua iscrizione!')}
-            </p>
+          {submitStatus === 'success' ? (
+            <div className="bg-[#e8f2ec] border border-[#1a5c35] rounded-xl p-6 max-w-md mx-auto">
+              <p className="text-[#1a5c35] font-semibold text-center">
+                ✓ {t('Vielen Dank für Ihre Anmeldung!', 'Grazie per la tua iscrizione!')}
+              </p>
+            </div>
           ) : (
-            <form onSubmit={handleSubscribe} className="flex items-center gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t('Ihre E-Mail-Adresse', 'Il tuo indirizzo email')}
-                className="flex-1 border-0 border-b border-gray-300 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#1a5c35] bg-transparent text-sm"
-              />
-              <button
-                type="submit"
-                className="text-[#1a5c35] font-bold text-sm hover:text-[#134428] transition-colors whitespace-nowrap"
-              >
-                {t('Abonnieren', 'Iscriviti')}
-              </button>
-            </form>
+            <div className="max-w-md mx-auto">
+              <form onSubmit={handleSubscribe} className="flex items-center gap-4">
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (submitStatus === 'error') setSubmitStatus('idle');
+                  }}
+                  placeholder={t('Ihre E-Mail-Adresse', 'Il tuo indirizzo email')}
+                  className="flex-1 border-0 border-b border-gray-300 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#1a5c35] bg-transparent text-sm"
+                />
+                <button
+                  type="submit"
+                  disabled={submitStatus === 'loading'}
+                  className="text-[#1a5c35] font-bold text-sm hover:text-[#134428] transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {submitStatus === 'loading' ? t('Wird gesendet...', 'Invio...') : t('Abonnieren', 'Iscriviti')}
+                </button>
+              </form>
+              {submitStatus === 'error' && errorMessage && (
+                <div className="mt-4 bg-[#fbeaea] border border-[#c0392b] rounded-xl p-3">
+                  <p className="text-[#c0392b] text-sm text-center">{errorMessage}</p>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </section>
