@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Check, User, Users } from 'lucide-react';
 import { supabase } from '../supabase';
 import { useLang } from '../contexts/LanguageContext';
 
 interface MembershipProps {
   onNavigate: (page: 'home' | 'events' | 'membership' | 'contact') => void;
+  scrollToForm?: boolean;
+  onFormScrolled?: () => void;
 }
 
 const boardMembers = [
@@ -18,12 +20,20 @@ const boardMembers = [
   { name: 'Erwin Peretti', roleDe: 'Beisitzer', roleIt: 'Consigliere' },
 ];
 
-export default function Membership({ onNavigate: _onNavigate }: MembershipProps) {
+export default function Membership({ onNavigate: _onNavigate, scrollToForm, onFormScrolled }: MembershipProps) {
   const { t } = useLang();
   const [formData, setFormData] = useState({ name: '', email: '', type: 'single', message: '' });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
+  const formRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollToForm && formRef.current) {
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      onFormScrolled?.();
+    }
+  }, [scrollToForm, onFormScrolled]);
 
   const validateForm = () => {
     const errors: {[key: string]: string} = {};
@@ -284,7 +294,7 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
           </div>
 
           {/* Signup form */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+          <div ref={formRef} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 scroll-mt-20">
             <h3 className="text-xl font-black text-gray-900 mb-2">
               {t('Jetzt Mitglied werden', 'Iscriviti ora')}
             </h3>

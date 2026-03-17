@@ -4,6 +4,7 @@ import { useLang } from '../contexts/LanguageContext';
 
 interface HomeProps {
   onNavigate: (page: 'home' | 'events' | 'membership' | 'contact') => void;
+  onNavigateToForm: (shouldScroll: boolean) => void;
 }
 
 function useInView(threshold = 0.15) {
@@ -41,7 +42,7 @@ function AnimatedNumber({ target, suffix = '' }: { target: number; suffix?: stri
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-export default function Home({ onNavigate }: HomeProps) {
+export default function Home({ onNavigate, onNavigateToForm }: HomeProps) {
   const { t } = useLang();
   const [heroLoaded, setHeroLoaded] = useState(false);
   const aboutSection = useInView();
@@ -103,7 +104,7 @@ export default function Home({ onNavigate }: HomeProps) {
 
             <div className="flex flex-wrap items-center gap-4">
               <button
-                onClick={() => onNavigate('membership')}
+                onClick={() => onNavigateToForm(true)}
                 className="group flex items-center gap-2 px-8 py-3.5 bg-[#1a5c35] hover:bg-[#134428] text-white text-sm font-bold rounded-full transition-all duration-200 shadow-lg hover:scale-[1.02]"
               >
                 <Users className="w-4 h-4" />

@@ -12,6 +12,7 @@ type Page = 'home' | 'events' | 'membership' | 'contact';
 function AppContent() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollToForm, setScrollToForm] = useState(false);
   const { lang, setLang, t } = useLang();
 
   const navigation = [
@@ -21,18 +22,23 @@ function AppContent() {
     { id: 'contact', labelDe: 'Kontakt', labelIt: 'Contatto' },
   ];
 
+  const handleNavigateToMembership = (shouldScroll: boolean = false) => {
+    setCurrentPage('membership');
+    setScrollToForm(shouldScroll);
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <Home onNavigate={setCurrentPage} />;
+        return <Home onNavigate={setCurrentPage} onNavigateToForm={handleNavigateToMembership} />;
       case 'events':
         return <Events onNavigate={setCurrentPage} />;
       case 'membership':
-        return <Membership onNavigate={setCurrentPage} />;
+        return <Membership onNavigate={setCurrentPage} scrollToForm={scrollToForm} onFormScrolled={() => setScrollToForm(false)} />;
       case 'contact':
         return <Contact />;
       default:
-        return <Home onNavigate={setCurrentPage} />;
+        return <Home onNavigate={setCurrentPage} onNavigateToForm={handleNavigateToMembership} />;
     }
   };
 
