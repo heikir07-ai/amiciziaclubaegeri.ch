@@ -184,25 +184,6 @@ export default function Events({ onNavigate }: EventsProps) {
         )}
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 pb-12 pt-10 border-t border-gray-100">
-        <h2 className="text-3xl font-bold text-[#1a5c35] mb-4">
-          {t('Jahresprogramm 2026', 'Programma annuale 2026')}
-        </h2>
-        <p className="text-gray-400 mb-6 leading-relaxed">
-          {t(
-            'Laden Sie das vollständige Jahresprogramm 2026 mit allen Veranstaltungen und Details herunter.',
-            'Scarica il programma completo dell\'anno 2026 con tutti gli eventi e i dettagli.'
-          )}
-        </p>
-        <a
-          href="/Briefe_2026_Amicia.pdf"
-          download
-          className="inline-block px-6 py-3 bg-[#1a5c35] text-white text-sm font-bold rounded-xl hover:bg-[#134428] transition-colors"
-        >
-          {t('PDF herunterladen', 'Scarica PDF')}
-        </a>
-      </div>
-
       <div className="max-w-3xl mx-auto px-4 pb-24 pt-10 border-t border-gray-100">
         <h2 className="text-3xl font-bold text-[#1a5c35] mb-4">
           {t('Möchten Sie eine Veranstaltung organisieren?', 'Volete organizzare un evento?')}
