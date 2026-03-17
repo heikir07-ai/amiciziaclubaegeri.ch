@@ -195,9 +195,17 @@ export default function Membership({ onNavigate: _onNavigate, scrollToForm, onFo
           <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-2">
             {t('Vorstand 2026-2028', 'Comitato 2026-2028')}
           </h2>
-          <p className="text-gray-400 text-sm mb-10">
+          <p className="text-gray-400 text-sm mb-8">
             {t('Unser Vorstand ist für Sie da', 'Il nostro comitato è a vostra disposizione')}
           </p>
+
+          <div className="mb-10 rounded-2xl overflow-hidden shadow-lg">
+            <img
+              src="/IMG_4134.jpeg"
+              alt={t('Vorstand des Amicizia Club Aegeri', 'Comitato dell\'Amicizia Club Aegeri')}
+              className="w-full h-auto object-cover"
+            />
+          </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {boardMembers.map((member) => (
