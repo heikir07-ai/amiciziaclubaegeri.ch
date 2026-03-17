@@ -95,7 +95,7 @@ export default function Events({ onNavigate }: EventsProps) {
     setFieldErrors({});
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('event_registrations')
         .insert([{
           event_id: selectedEvent.id,
@@ -104,10 +104,15 @@ export default function Events({ onNavigate }: EventsProps) {
           participant_phone: formData.phone.trim(),
           number_of_people: parseInt(formData.numberOfPeople),
           status: 'pending',
-        }]);
+        }])
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Event registration error:', error);
+        throw error;
+      }
 
+      console.log('Event registration submitted successfully:', data);
       setSubmitStatus('success');
       setFormData({ name: '', email: '', phone: '', numberOfPeople: '1' });
       setTimeout(() => {
@@ -115,6 +120,7 @@ export default function Events({ onNavigate }: EventsProps) {
         setSubmitStatus('idle');
       }, 3000);
     } catch (error: any) {
+      console.error('Event registration submission failed:', error);
       setSubmitStatus('error');
       setErrorMessage(error.message || t('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.', 'Si è verificato un errore. Riprova.'));
     }

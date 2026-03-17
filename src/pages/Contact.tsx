@@ -46,7 +46,7 @@ export default function Contact() {
     setFieldErrors({});
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('contact_messages')
         .insert([{
           name: formData.name.trim(),
@@ -54,14 +54,20 @@ export default function Contact() {
           subject: formData.subject.trim(),
           message: formData.message.trim(),
           status: 'new'
-        }]);
+        }])
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Contact form error:', error);
+        throw error;
+      }
 
+      console.log('Contact message submitted successfully:', data);
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setSubmitStatus('idle'), 5000);
     } catch (error: any) {
+      console.error('Contact form submission failed:', error);
       setSubmitStatus('error');
       setErrorMessage(error.message || t('Ein Fehler ist aufgetreten.', 'Si è verificato un errore.'));
     }

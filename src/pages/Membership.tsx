@@ -63,7 +63,7 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
 
       const finalMessage = formData.message.trim() || defaultMessage;
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('contact_messages')
         .insert([{
           name: formData.name.trim(),
@@ -71,14 +71,20 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
           subject,
           message: finalMessage,
           status: 'new',
-        }]);
+        }])
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Membership form error:', error);
+        throw error;
+      }
 
+      console.log('Membership application submitted successfully:', data);
       setSubmitStatus('success');
       setFormData({ name: '', email: '', type: 'single', message: '' });
       setTimeout(() => setSubmitStatus('idle'), 6000);
     } catch (error: any) {
+      console.error('Membership form submission failed:', error);
       setSubmitStatus('error');
       setErrorMessage(error.message || t('Ein Fehler ist aufgetreten.', 'Si è verificato un errore.'));
     }
