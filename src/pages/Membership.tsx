@@ -53,10 +53,6 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
     setFieldErrors({});
 
     try {
-      const subject = formData.type === 'single'
-        ? t('Mitgliedschaft Einzelperson', 'Iscrizione individuale')
-        : t('Mitgliedschaft Familie', 'Iscrizione famiglia');
-
       const defaultMessage = formData.type === 'single'
         ? t('Ich möchte Einzelmitglied des Amicizia Club Aegeri werden.', 'Vorrei diventare membro individuale del Club Amicizia Aegeri.')
         : t('Ich möchte Familienmitglied des Amicizia Club Aegeri werden.', 'Vorrei diventare membro famiglia del Club Amicizia Aegeri.');
@@ -64,11 +60,11 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
       const finalMessage = formData.message.trim() || defaultMessage;
 
       const { data, error } = await supabase
-        .from('contact_messages')
+        .from('membership_applications')
         .insert([{
-          name: formData.name.trim(),
+          full_name: formData.name.trim(),
           email: formData.email.trim().toLowerCase(),
-          subject,
+          membership_type: formData.type,
           message: finalMessage,
           status: 'new',
         }])
