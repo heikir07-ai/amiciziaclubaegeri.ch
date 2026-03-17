@@ -29,6 +29,7 @@ export default function Events({ onNavigate }: EventsProps) {
   });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
 
   useEffect(() => {
     loadEvents();
@@ -60,21 +61,47 @@ export default function Events({ onNavigate }: EventsProps) {
     });
   };
 
+  const validateForm = () => {
+    const errors: {[key: string]: string} = {};
+
+    if (!formData.name.trim() || formData.name.trim().length < 2) {
+      errors.name = t('Bitte geben Sie einen gültigen Namen ein', 'Inserisci un nome valido');
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      errors.email = t('Bitte geben Sie eine gültige E-Mail-Adresse ein', 'Inserisci un indirizzo email valido');
+    }
+
+    const phoneRegex = /^[\d\s+()-]{10,}$/;
+    if (!phoneRegex.test(formData.phone.trim())) {
+      errors.phone = t('Bitte geben Sie eine gültige Telefonnummer ein', 'Inserisci un numero di telefono valido');
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedEvent) return;
 
+    if (!validateForm()) {
+      return;
+    }
+
     setSubmitStatus('loading');
     setErrorMessage('');
+    setFieldErrors({});
 
     try {
       const { error } = await supabase
         .from('event_registrations')
         .insert([{
           event_id: selectedEvent.id,
-          participant_name: formData.name,
-          participant_email: formData.email,
-          participant_phone: formData.phone,
+          participant_name: formData.name.trim(),
+          participant_email: formData.email.trim().toLowerCase(),
+          participant_phone: formData.phone.trim(),
           number_of_people: parseInt(formData.numberOfPeople),
           status: 'pending',
         }]);
@@ -89,7 +116,7 @@ export default function Events({ onNavigate }: EventsProps) {
       }, 3000);
     } catch (error: any) {
       setSubmitStatus('error');
-      setErrorMessage(error.message || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
+      setErrorMessage(error.message || t('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.', 'Si è verificato un errore. Riprova.'));
     }
   };
 
@@ -205,11 +232,16 @@ export default function Events({ onNavigate }: EventsProps) {
                     <input
                       type="text"
                       required
+                      minLength={2}
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, name: e.target.value });
+                        if (fieldErrors.name) setFieldErrors({...fieldErrors, name: ''});
+                      }}
+                      className={`w-full px-4 py-3 border rounded-xl text-sm focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none ${fieldErrors.name ? 'border-[#c0392b]' : 'border-gray-200'}`}
                       placeholder={t('Ihr vollständiger Name', 'Il tuo nome completo')}
                     />
+                    {fieldErrors.name && <p className="text-[#c0392b] text-xs mt-1">{fieldErrors.name}</p>}
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wide">E-Mail *</label>
@@ -217,10 +249,14 @@ export default function Events({ onNavigate }: EventsProps) {
                       type="email"
                       required
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value });
+                        if (fieldErrors.email) setFieldErrors({...fieldErrors, email: ''});
+                      }}
+                      className={`w-full px-4 py-3 border rounded-xl text-sm focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none ${fieldErrors.email ? 'border-[#c0392b]' : 'border-gray-200'}`}
                       placeholder={t('ihre.email@beispiel.com', 'tua.email@esempio.com')}
                     />
+                    {fieldErrors.email && <p className="text-[#c0392b] text-xs mt-1">{fieldErrors.email}</p>}
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wide">{t('Telefon', 'Telefono')} *</label>
@@ -228,10 +264,14 @@ export default function Events({ onNavigate }: EventsProps) {
                       type="tel"
                       required
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, phone: e.target.value });
+                        if (fieldErrors.phone) setFieldErrors({...fieldErrors, phone: ''});
+                      }}
+                      className={`w-full px-4 py-3 border rounded-xl text-sm focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none ${fieldErrors.phone ? 'border-[#c0392b]' : 'border-gray-200'}`}
                       placeholder="+41 79 123 45 67"
                     />
+                    {fieldErrors.phone && <p className="text-[#c0392b] text-xs mt-1">{fieldErrors.phone}</p>}
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wide">

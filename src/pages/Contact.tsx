@@ -8,16 +8,53 @@ export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
+
+  const validateForm = () => {
+    const errors: {[key: string]: string} = {};
+
+    if (!formData.name.trim() || formData.name.trim().length < 2) {
+      errors.name = t('Bitte geben Sie einen gültigen Namen ein', 'Inserisci un nome valido');
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      errors.email = t('Bitte geben Sie eine gültige E-Mail-Adresse ein', 'Inserisci un indirizzo email valido');
+    }
+
+    if (!formData.subject.trim() || formData.subject.trim().length < 3) {
+      errors.subject = t('Bitte geben Sie einen gültigen Betreff ein', 'Inserisci un oggetto valido');
+    }
+
+    if (!formData.message.trim() || formData.message.trim().length < 10) {
+      errors.message = t('Bitte geben Sie eine Nachricht mit mindestens 10 Zeichen ein', 'Inserisci un messaggio di almeno 10 caratteri');
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setSubmitStatus('loading');
     setErrorMessage('');
+    setFieldErrors({});
 
     try {
       const { error } = await supabase
         .from('contact_messages')
-        .insert([{ name: formData.name, email: formData.email, subject: formData.subject, message: formData.message, status: 'new' }]);
+        .insert([{
+          name: formData.name.trim(),
+          email: formData.email.trim().toLowerCase(),
+          subject: formData.subject.trim(),
+          message: formData.message.trim(),
+          status: 'new'
+        }]);
 
       if (error) throw error;
 
@@ -137,11 +174,16 @@ export default function Contact() {
                 <input
                   type="text"
                   required
+                  minLength={2}
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none"
+                  onChange={(e) => {
+                    setFormData({ ...formData, name: e.target.value });
+                    if (fieldErrors.name) setFieldErrors({...fieldErrors, name: ''});
+                  }}
+                  className={`w-full px-4 py-3 border rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none ${fieldErrors.name ? 'border-[#c0392b]' : 'border-gray-200'}`}
                   placeholder={t('Ihr Name', 'Il tuo nome')}
                 />
+                {fieldErrors.name && <p className="text-[#c0392b] text-xs mt-1">{fieldErrors.name}</p>}
               </div>
 
               <div>
@@ -150,10 +192,14 @@ export default function Contact() {
                   type="email"
                   required
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none"
+                  onChange={(e) => {
+                    setFormData({ ...formData, email: e.target.value });
+                    if (fieldErrors.email) setFieldErrors({...fieldErrors, email: ''});
+                  }}
+                  className={`w-full px-4 py-3 border rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none ${fieldErrors.email ? 'border-[#c0392b]' : 'border-gray-200'}`}
                   placeholder={t('Ihre E-Mail', 'La tua email')}
                 />
+                {fieldErrors.email && <p className="text-[#c0392b] text-xs mt-1">{fieldErrors.email}</p>}
               </div>
 
               <div>
@@ -163,11 +209,16 @@ export default function Contact() {
                 <input
                   type="text"
                   required
+                  minLength={3}
                   value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none"
+                  onChange={(e) => {
+                    setFormData({ ...formData, subject: e.target.value });
+                    if (fieldErrors.subject) setFieldErrors({...fieldErrors, subject: ''});
+                  }}
+                  className={`w-full px-4 py-3 border rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none ${fieldErrors.subject ? 'border-[#c0392b]' : 'border-gray-200'}`}
                   placeholder={t('Betreff der Nachricht', 'Oggetto del messaggio')}
                 />
+                {fieldErrors.subject && <p className="text-[#c0392b] text-xs mt-1">{fieldErrors.subject}</p>}
               </div>
 
               <div>
@@ -176,12 +227,17 @@ export default function Contact() {
                 </label>
                 <textarea
                   required
+                  minLength={10}
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, message: e.target.value });
+                    if (fieldErrors.message) setFieldErrors({...fieldErrors, message: ''});
+                  }}
                   rows={6}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none resize-none"
+                  className={`w-full px-4 py-3 border rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none resize-none ${fieldErrors.message ? 'border-[#c0392b]' : 'border-gray-200'}`}
                   placeholder={t('Ihre Nachricht', 'Il tuo messaggio')}
                 />
+                {fieldErrors.message && <p className="text-[#c0392b] text-xs mt-1">{fieldErrors.message}</p>}
               </div>
 
               {submitStatus === 'error' && (

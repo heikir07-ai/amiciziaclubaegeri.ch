@@ -23,11 +23,34 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
   const [formData, setFormData] = useState({ name: '', email: '', type: 'single', message: '' });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
+
+  const validateForm = () => {
+    const errors: {[key: string]: string} = {};
+
+    if (!formData.name.trim() || formData.name.trim().length < 2) {
+      errors.name = t('Bitte geben Sie einen gültigen Namen ein', 'Inserisci un nome valido');
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      errors.email = t('Bitte geben Sie eine gültige E-Mail-Adresse ein', 'Inserisci un indirizzo email valido');
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setSubmitStatus('loading');
     setErrorMessage('');
+    setFieldErrors({});
 
     try {
       const subject = formData.type === 'single'
@@ -37,10 +60,10 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
       const { error } = await supabase
         .from('contact_messages')
         .insert([{
-          name: formData.name,
-          email: formData.email,
+          name: formData.name.trim(),
+          email: formData.email.trim().toLowerCase(),
           subject,
-          message: formData.message || t('Mitgliedschaftsanfrage', 'Richiesta di iscrizione'),
+          message: formData.message.trim() || t('Mitgliedschaftsanfrage', 'Richiesta di iscrizione'),
           status: 'new',
         }]);
 
@@ -283,11 +306,16 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
                     <input
                       type="text"
                       required
+                      minLength={2}
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, name: e.target.value });
+                        if (fieldErrors.name) setFieldErrors({...fieldErrors, name: ''});
+                      }}
+                      className={`w-full px-4 py-3 border rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none ${fieldErrors.name ? 'border-[#c0392b]' : 'border-gray-200'}`}
                       placeholder={t('Ihr Name', 'Il vostro nome')}
                     />
+                    {fieldErrors.name && <p className="text-[#c0392b] text-xs mt-1">{fieldErrors.name}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -297,10 +325,14 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
                       type="email"
                       required
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value });
+                        if (fieldErrors.email) setFieldErrors({...fieldErrors, email: ''});
+                      }}
+                      className={`w-full px-4 py-3 border rounded-xl text-sm text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-[#1a5c35] focus:border-transparent outline-none ${fieldErrors.email ? 'border-[#c0392b]' : 'border-gray-200'}`}
                       placeholder={t('Ihre E-Mail', 'La vostra email')}
                     />
+                    {fieldErrors.email && <p className="text-[#c0392b] text-xs mt-1">{fieldErrors.email}</p>}
                   </div>
                 </div>
 
