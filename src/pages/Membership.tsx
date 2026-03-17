@@ -57,13 +57,19 @@ export default function Membership({ onNavigate: _onNavigate }: MembershipProps)
         ? t('Mitgliedschaft Einzelperson', 'Iscrizione individuale')
         : t('Mitgliedschaft Familie', 'Iscrizione famiglia');
 
+      const defaultMessage = formData.type === 'single'
+        ? t('Ich möchte Einzelmitglied des Amicizia Club Aegeri werden.', 'Vorrei diventare membro individuale del Club Amicizia Aegeri.')
+        : t('Ich möchte Familienmitglied des Amicizia Club Aegeri werden.', 'Vorrei diventare membro famiglia del Club Amicizia Aegeri.');
+
+      const finalMessage = formData.message.trim() || defaultMessage;
+
       const { error } = await supabase
         .from('contact_messages')
         .insert([{
           name: formData.name.trim(),
           email: formData.email.trim().toLowerCase(),
           subject,
-          message: formData.message.trim() || t('Mitgliedschaftsanfrage', 'Richiesta di iscrizione'),
+          message: finalMessage,
           status: 'new',
         }]);
 
