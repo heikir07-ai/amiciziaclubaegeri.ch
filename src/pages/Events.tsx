@@ -113,6 +113,38 @@ export default function Events({ onNavigate }: EventsProps) {
       }
 
       console.log('Event registration submitted successfully:', data);
+
+      // Send email notification via Edge Function
+      try {
+        const emailResponse = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-event-email`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            },
+            body: JSON.stringify({
+              eventTitle: selectedEvent.title,
+              participantName: formData.name.trim(),
+              participantEmail: formData.email.trim(),
+              participantPhone: formData.phone.trim(),
+              registrationEmail: 'amiciziaclubaegeri@gmail.com',
+              eventDate: selectedEvent.event_date,
+              eventLocation: selectedEvent.location,
+            }),
+          }
+        );
+
+        if (!emailResponse.ok) {
+          console.error('Email sending failed:', await emailResponse.text());
+        } else {
+          console.log('Email sent successfully');
+        }
+      } catch (emailError) {
+        console.error('Email sending error:', emailError);
+      }
+
       setSubmitStatus('success');
       setFormData({ name: '', email: '', phone: '', numberOfPeople: '1' });
       setTimeout(() => {

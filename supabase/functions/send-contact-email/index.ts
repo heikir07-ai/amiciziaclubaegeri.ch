@@ -35,7 +35,7 @@ Nachricht:
 ${message}
 
 ---
-Diese E-Mail wurde automatisch vom Kontaktformular auf vzv-huenenberg.ch generiert.
+Diese E-Mail wurde automatisch vom Kontaktformular der Amicizia Club Aegeri Website generiert.
     `.trim();
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
@@ -64,7 +64,7 @@ Diese E-Mail wurde automatisch vom Kontaktformular auf vzv-huenenberg.ch generie
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "VZV Hünenberg <noreply@vzv-huenenberg.ch>",
+        from: "Amicizia Club Aegeri <onboarding@resend.dev>",
         to: ["amiciziaclubaegeri@gmail.com"],
         reply_to: email,
         subject: `Kontaktanfrage: ${subject}`,

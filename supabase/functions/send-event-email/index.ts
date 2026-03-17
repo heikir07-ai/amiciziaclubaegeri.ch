@@ -58,7 +58,7 @@ Teilnehmer:
 ${participantPhone ? `- Telefon: ${participantPhone}` : ''}
 
 ---
-Diese E-Mail wurde automatisch vom Veranstaltungsformular auf vzv-huenenberg.ch generiert.
+Diese E-Mail wurde automatisch vom Veranstaltungsformular der Amicizia Club Aegeri Website generiert.
     `.trim();
 
     const confirmationEmailBody = `
@@ -75,7 +75,7 @@ Wir freuen uns auf Ihre Teilnahme!
 Bei Fragen kontaktieren Sie uns bitte unter: ${registrationEmail}
 
 Mit freundlichen Grüssen
-Ihr VZV Hünenberg Team
+Ihr Amicizia Club Aegeri Team
     `.trim();
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
@@ -104,7 +104,7 @@ Ihr VZV Hünenberg Team
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "VZV Hünenberg <noreply@vzv-huenenberg.ch>",
+        from: "Amicizia Club Aegeri <onboarding@resend.dev>",
         to: [registrationEmail],
         reply_to: participantEmail,
         subject: `Neue Anmeldung: ${eventTitle}`,
@@ -125,7 +125,7 @@ Ihr VZV Hünenberg Team
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "VZV Hünenberg <noreply@vzv-huenenberg.ch>",
+        from: "Amicizia Club Aegeri <onboarding@resend.dev>",
         to: [participantEmail],
         subject: `Anmeldebestätigung: ${eventTitle}`,
         text: confirmationEmailBody,

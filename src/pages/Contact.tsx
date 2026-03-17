@@ -63,6 +63,35 @@ export default function Contact() {
       }
 
       console.log('Contact message submitted successfully:', data);
+
+      // Send email notification via Edge Function
+      try {
+        const emailResponse = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            },
+            body: JSON.stringify({
+              name: formData.name.trim(),
+              email: formData.email.trim(),
+              subject: formData.subject.trim(),
+              message: formData.message.trim(),
+            }),
+          }
+        );
+
+        if (!emailResponse.ok) {
+          console.error('Email sending failed:', await emailResponse.text());
+        } else {
+          console.log('Email sent successfully');
+        }
+      } catch (emailError) {
+        console.error('Email sending error:', emailError);
+      }
+
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setSubmitStatus('idle'), 5000);
