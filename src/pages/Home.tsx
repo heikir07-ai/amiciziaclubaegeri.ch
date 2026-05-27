@@ -85,7 +85,7 @@ export default function Home({ onNavigate, onNavigateToForm }: HomeProps) {
             <div className="flex items-center gap-3 mb-8">
               <div className="h-px w-12 bg-[#1a5c35]" />
               <span className="text-[#1a5c35] text-xs font-bold tracking-[0.25em] uppercase bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">
-                Unterägeri · Kanton Zug · Dal 1978
+                Unterägeri · Kanton Zug · Dal 1984
               </span>
             </div>
 
@@ -133,7 +133,7 @@ export default function Home({ onNavigate, onNavigateToForm }: HomeProps) {
       {/* ABOUT BAND */}
       <section className="bg-[#1a5c35] py-4">
         <div className="max-w-6xl mx-auto px-6 flex flex-wrap items-center justify-center gap-8 md:gap-16 text-white/90 text-sm font-medium">
-          <span>{t('Gegründet 1978', 'Fondato nel 1978')}</span>
+          <span>{t('Gegründet 1984', 'Fondato nel 1984')}</span>
           <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
           <span>Am Baumgarten 5, 6314 Unterägeri</span>
           <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
@@ -195,7 +195,7 @@ export default function Home({ onNavigate, onNavigateToForm }: HomeProps) {
                   <Heart className="w-5 h-5 text-[#1a5c35]" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-gray-900">{t('Seit 1978', 'Dal 1978')}</p>
+                  <p className="text-sm font-bold text-gray-900">{t('Seit 1984', 'Dal 1984')}</p>
                   <p className="text-xs text-gray-400">Unterägeri, Kanton Zug</p>
                 </div>
               </div>
