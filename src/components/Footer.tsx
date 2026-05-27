@@ -112,7 +112,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               </div>
               <h3 className="text-base font-bold text-white mb-2">Amicizia Club Aegeri</h3>
               <p className="text-white/60 text-sm">
-                {t('Freundschaft und Gemeinschaft seit 1985.', 'Amicizia e comunità dal 1985.')}
+                {t('Freundschaft und Gemeinschaft seit 1984.', "Amicizia e comunità dell'Associazione dal 1984.")}
               </p>
             </div>
 

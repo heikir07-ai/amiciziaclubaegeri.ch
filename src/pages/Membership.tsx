@@ -64,8 +64,8 @@ export default function Membership({ onNavigate: _onNavigate, scrollToForm, onFo
 
     try {
       const defaultMessage = formData.type === 'single'
-        ? t('Ich möchte Einzelmitglied des Amicizia Club Aegeri werden.', 'Vorrei diventare membro individuale del Club Amicizia Aegeri.')
-        : t('Ich möchte Familienmitglied des Amicizia Club Aegeri werden.', 'Vorrei diventare membro famiglia del Club Amicizia Aegeri.');
+        ? t('Ich möchte Einzelmitglied des Amicizia Club Aegeri werden.', "Vorrei diventare membro individuale dell'Associazione Amicizia Aegeri.")
+        : t('Ich möchte Familienmitglied des Amicizia Club Aegeri werden.', "Vorrei diventare membro famiglia dell'Associazione Amicizia Aegeri.");
 
       const finalMessage = formData.message.trim() || defaultMessage;
 
@@ -169,14 +169,14 @@ export default function Membership({ onNavigate: _onNavigate, scrollToForm, onFo
           <div className="space-y-5">
             <p className="text-gray-500 text-base leading-relaxed">
               {t(
-                'Der Amicizia Club Aegeri wurde 1985 von italienischen Emigranten in Unterägeri gegründet mit dem Ziel, die Freundschaft zwischen der italienischen und der Schweizer Bevölkerung zu fördern. Entstanden aus der Leidenschaft und dem Wunsch, einen Raum zu schaffen, in dem die italienische Kultur gedeihen kann, hat der Club von Anfang an Brücken zwischen den beiden Gemeinschaften gebaut und eine einladende Umgebung geschaffen, in der Neuankömmlinge Unterstützung und Akzeptanz finden.',
-                "Il Club Amicizia Aegeri è stato fondato nel 1985 da emigranti italiani a Unterägeri con l'obiettivo di promuovere l'amicizia tra la popolazione italiana e svizzera. Nato dalla passione e dal desiderio di creare uno spazio in cui la cultura italiana possa prosperare, il club ha costruito fin dall'inizio ponti tra le due comunità e creato un ambiente accogliente in cui i nuovi arrivati trovano sostegno e accettazione."
+                'Der Amicizia Club Aegeri wurde 1984 von italienischen Emigranten in Unterägeri gegründet mit dem Ziel, die Freundschaft zwischen der italienischen und der Schweizer Bevölkerung zu fördern. Entstanden aus der Leidenschaft und dem Wunsch, einen Raum zu schaffen, in dem die italienische Kultur gedeihen kann, hat die Associazione von Anfang an Brücken zwischen den beiden Gemeinschaften gebaut und eine einladende Umgebung geschaffen, in der Neuankömmlinge Unterstützung und Akzeptanz finden.',
+                "L'Associazione Amicizia Aegeri è stata fondata nel 1984 da emigranti italiani a Unterägeri con l'obiettivo di promuovere l'amicizia tra la popolazione italiana e svizzera. Nata dalla passione e dal desiderio di creare uno spazio in cui la cultura italiana possa prosperare, l'Associazione ha costruito fin dall'inizio ponti tra le due comunità e creato un ambiente accogliente in cui i nuovi arrivati trovano sostegno e accoglienza."
               )}
             </p>
             <p className="text-gray-500 text-base leading-relaxed">
               {t(
-                'In fast vier Jahrzehnten haben wir hunderte von Veranstaltungen organisiert, tausenden von Menschen geholfen und eine lebendige Gemeinschaft geschaffen, die das Beste der italienischen Kultur und Werte repräsentiert und die Integration sowie das gegenseitige Verständnis zwischen Italienern und Schweizern fördert.',
-                "In quasi quattro decenni abbiamo organizzato centinaia di eventi, aiutato migliaia di persone e creato una vivace comunità che rappresenta il meglio della cultura e dei valori italiani e promuove l'integrazione e la comprensione reciproca tra italiani e svizzeri."
+                'In mehr als vier Jahrzehnten haben wir hunderte von Veranstaltungen organisiert, tausenden von Menschen geholfen und eine lebendige Gemeinschaft geschaffen, die das Beste der italienischen Kultur und Werte repräsentiert und die Integration sowie das gegenseitige Verständnis zwischen Italienern und Schweizern fördert und neue Initiativen für gemeinsame Erlebnisse schafft.',
+                "In più di quattro decenni abbiamo organizzato centinaia di eventi, aiutato migliaia di persone e creato una vivace comunità che rappresenta il meglio della cultura e dei valori italiani, promuove l'integrazione e la comprensione reciproca tra italiani e svizzeri e dà vita a nuove iniziative per esperienze condivise."
               )}
             </p>
           </div>
