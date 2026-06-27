@@ -222,6 +222,58 @@ export default function Events({ onNavigate }: EventsProps) {
         )}
       </div>
 
+      <div className="max-w-3xl mx-auto px-4 pb-16 pt-10 border-t border-gray-100">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="h-px w-8 bg-[#c0392b]" />
+          <span className="text-[#c0392b] text-xs font-bold tracking-[0.2em] uppercase">
+            {t('Impressionen', 'Impressioni')}
+          </span>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-3">
+          {t('Festa nel Bosco / Waldfest 2026', 'Festa nel Bosco / Waldfest 2026')}
+        </h2>
+        <p className="text-gray-500 mb-8 leading-relaxed">
+          {t(
+            'Am 21. Juni 2026 fand unser traditionelles Waldfest in der Schützenstube statt. Es war ein wunderbarer Tag mit hervorragendem Essen, guter Gesellschaft und viel Freude für alle Anwesenden. Hier einige Impressionen von diesem gelungenen Fest.',
+            'Il 21 giugno 2026 si è tenuta la nostra tradizionale Festa nel Bosco alla Schützenstube. È stata una giornata meravigliosa con ottimo cibo, buona compagnia e molta gioia per tutti i presenti. Ecco alcune impressioni di questa festa riuscita.'
+          )}
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-2">
+          <div className="aspect-square overflow-hidden rounded-xl">
+            <img
+              src="/images/events/IMG_5108.jpeg"
+              alt={t('Waldfest Impression', 'Impressione Waldfest')}
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+          </div>
+          <div className="aspect-square overflow-hidden rounded-xl">
+            <img
+              src="/images/events/IMG_5110.jpeg"
+              alt={t('Waldfest Impression', 'Impressione Waldfest')}
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+          </div>
+          <div className="aspect-square overflow-hidden rounded-xl">
+            <img
+              src="/images/events/IMG_5116.jpeg"
+              alt={t('Waldfest Impression', 'Impressione Waldfest')}
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+          </div>
+          <div className="aspect-square overflow-hidden rounded-xl">
+            <img
+              src="/images/events/IMG_5118.jpeg"
+              alt={t('Waldfest Impression', 'Impressione Waldfest')}
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-3xl mx-auto px-4 pb-24 pt-10 border-t border-gray-100">
         <h2 className="text-3xl font-bold text-[#1a5c35] mb-4">
           {t('Möchten Sie eine Veranstaltung organisieren?', 'Volete organizzare un evento?')}
